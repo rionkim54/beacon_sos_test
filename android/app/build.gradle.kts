@@ -24,7 +24,7 @@ android {
         applicationId = "com.example.beacon_sos_test"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+        minSdk = 23 // flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -37,8 +37,16 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
+
+
 }
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    // Eclipse Paho MQTT
+    implementation("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5")
+    implementation("org.eclipse.paho:org.eclipse.paho.android.service:1.1.1")
 }

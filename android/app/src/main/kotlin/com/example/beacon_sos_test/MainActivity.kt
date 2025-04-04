@@ -22,16 +22,18 @@ class MainActivity: FlutterActivity() {
 
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler {
             call, result ->
-            if (call.method == "makeCall") {
-                val number = call.argument<String>("number")
-                val intent = Intent(Intent.ACTION_CALL)
-                intent.data = Uri.parse("tel:$number")
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    result.error("PERMISSION", "CALL_PHONE permission not granted", null)
-                    return@setMethodCallHandler
+            when (call.method) {
+                "startBleService" -> {
+                    val intent = Intent(this, BleScanService::class.java)
+                    startForegroundService(intent)
+                    result.success("Service started")
                 }
-                startActivity(intent)
-                result.success("Calling $number")
+                "stopBleService" -> {
+                    val intent = Intent(this, BleScanService::class.java)
+                    stopService(intent)
+                    result.success("Service stopped")
+                }
+                else -> result.notImplemented()
             }
         }
     }
